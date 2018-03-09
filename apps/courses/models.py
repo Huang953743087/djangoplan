@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 # Create your models here.
 
+#课程信息
 class Course(models.Model):
     #课程等级
     DEGREE_CHOICES = (
@@ -34,6 +35,7 @@ class Course(models.Model):
         verbose_name_plural = verbose_name
 
 
+#章节信息
 class Lesson(models.Model):
     #因为一个课程对应许多章节，所以章节表中课程为外键
     course = models.ForeignKey(Course, verbose_name=u'课程')
@@ -46,6 +48,7 @@ class Lesson(models.Model):
         verbose_name_plural = verbose_name
 
 
+#视频信息
 class Video(models.Model):
     #一个章节对应多个视频，所以章节为视频的外键
     lesson = models.ForeignKey(Lesson, verbose_name=u'章节')
@@ -56,7 +59,7 @@ class Video(models.Model):
         verbose_name = u'视频'
         verbose_name_plural = verbose_name
 
-
+#课程资源
 class CourseResource(models.Model):
     #因为一个课程对应很多资源，所以课程设置为外键
     course = models.ForeignKey(Course, verbose_name=u'课程')
