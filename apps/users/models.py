@@ -23,9 +23,9 @@ class UserProfile(AbstractUser):
         default='female'
     )
     # 地址
-    address = models.CharField(max_length=100, verbose_name='地址', default='')
+    address = models.CharField(max_length=100, verbose_name=u'地址', default='')
     # 电话
-    mobile = models.CharField(max_length=11, null=True, blank=True)
+    mobile = models.CharField(max_length=11, null=True, blank=True, verbose_name='电话')
     # 头像
     image = models.ImageField(
         upload_to="image/%Y/%m",

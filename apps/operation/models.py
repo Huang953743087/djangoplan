@@ -46,9 +46,7 @@ class UserFavorite(models.Model):
         (2, u"课程机构"),
         (3, u"讲师")
     )
-
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name=u"用户")
-
     # 直接保存用户的id.
     fav_id = models.IntegerField(default=0)
     # 表明收藏的是哪种类型。
