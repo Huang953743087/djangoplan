@@ -2,10 +2,12 @@ from datetime import datetime
 from django.db import models
 
 # Create your models here.
-#城市信息
+
+
+# 城市信息
 class CityDict(models.Model):
     name = models.CharField(max_length=20, verbose_name=u'城市')
-    #城市描述，备用，不一定展示
+    # 城市描述，备用，不一定展示
     desc = models.CharField(max_length=200, verbose_name=u'描述')
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
@@ -14,10 +16,10 @@ class CityDict(models.Model):
         verbose_name_plural = verbose_name
 
 
-#机构信息
+# 机构信息
 class CourseOrg(models.Model):
     name = models.CharField(max_length=50, verbose_name=u'机构名称')
-    #机构描述，后面替换为富文本展示
+    # 机构描述，后面替换为富文本展示
     desc = models.TextField(verbose_name=u'机构描述')
     click_nums = models.IntegerField(default=0, verbose_name=u'点击量')
     fav_nums = models.ImageField(
@@ -25,9 +27,9 @@ class CourseOrg(models.Model):
         verbose_name=u'封面图',
         max_length=100)
     address = models.CharField(max_length=150, verbose_name=u'机构地址')
-    #一个城市可以有很多课程机构，通过将city设置外键，变成课程机构的一个字段
-    #可以让我们通过机构找到城市
-    city = models.ForeignKey(CityDict, verbose_name=u'所在城市')
+    # 一个城市可以有很多课程机构，通过将city设置外键，变成课程机构的一个字段
+    # 可以让我们通过机构找到城市
+    city = models.ForeignKey(CityDict, on_delete=models.CASCADE, verbose_name=u'所在城市')
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
     class Meta:
@@ -35,10 +37,10 @@ class CourseOrg(models.Model):
         verbose_name_plural = verbose_name
 
 
-#讲师
+# 讲师
 class Teacher(models.Model):
-    #一个机构可以有很多老师，所以 我们在讲师表把课程机构作为外键，以便通过讲师查找对应的课程机构
-    org = models.ForeignKey(CourseOrg, verbose_name=u'所属机构')
+    # 一个机构可以有很多老师，所以 我们在讲师表把课程机构作为外键，以便通过讲师查找对应的课程机构
+    org = models.ForeignKey(CourseOrg, on_delete=models.CASCADE, verbose_name=u'所属机构')
     name = models.CharField(max_length=50, verbose_name=u"教师名称")
     work_years = models.IntegerField(default=0, verbose_name=u"工作年限")
     work_company = models.CharField(max_length=50, verbose_name=u"就职公司")
