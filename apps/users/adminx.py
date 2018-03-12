@@ -13,12 +13,12 @@ from xadmin.models import Log
 
 import xadmin
 
-from .models import EmailVerfyRecord, UserProfile, Banner
+from .models import EmailVerifyRecord, UserProfile, Banner
 from xadmin import views
 
 
 # 定义email管理
-class EmailVerfyRecordAdmin(object):
+class EmailVerifyRecordAdmin(object):
     # 添加显示列
     list_display = ['code', 'email', 'send_type', 'send_time']
     # 添加搜索
@@ -65,7 +65,7 @@ class GlobalSettings(object):
             )},
             {'title': '用户管理', 'menus': (
                 {'title': '用户信息', 'url': self.get_model_url(UserProfile, 'changelist')},
-                {'title': '用户验证', 'url': self.get_model_url(EmailVerfyRecord, 'changelist')},
+                {'title': '用户验证', 'url': self.get_model_url(EmailVerifyRecord, 'changelist')},
                 {'title': '用户课程', 'url': self.get_model_url(UserCourse, 'changelist')},
                 {'title': '用户收藏', 'url': self.get_model_url(UserFavorite, 'changelist')},
                 {'title': '用户消息', 'url': self.get_model_url(UserMessage, 'changelist')},
@@ -81,7 +81,7 @@ class GlobalSettings(object):
 
 
 # 注册
-xadmin.site.register(EmailVerfyRecord, EmailVerfyRecordAdmin)
+xadmin.site.register(EmailVerifyRecord, EmailVerifyRecordAdmin)
 xadmin.site.register(Banner, BannerAdmin)
 xadmin.site.register(views.BaseAdminView, BaseSetting)
 xadmin.site.register(views.CommAdminView, GlobalSettings)

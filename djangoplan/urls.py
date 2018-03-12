@@ -13,15 +13,25 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.urls import path
+from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 
 import xadmin
-from users.views import user_login
+from users.views import LoginView, RegisterView, ActiveUserView, ForgetPWDView, ResetView, ModifyPwdView
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     # TemplateView.as_view会将template转换为view
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
-    path('login/', user_login, name='login')
+    # 登录界面
+    path('login/',  LoginView.as_view(), name='login'),
+    # 注册界面
+    path('register/', RegisterView.as_view(), name='register'),
+    # 验证码
+    path("captcha/", include('captcha.urls')),
+    # 验证激活是否成功
+    re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name="user_active"),
+    path('forget_pwd/', ForgetPWDView.as_view(), name='forget_pwd'),
+    re_path('reset/(?P<active_code>.*)/', ResetView.as_view(), name="reset_pwd"),
+    path('modify_pwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 ]

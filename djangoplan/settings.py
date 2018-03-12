@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'courses',
     'operation',
     'organization',
+    'captcha',
 ]
 
 AUTH_USER_MODEL = "users.UserProfile"
@@ -140,3 +141,10 @@ AUTHENTICATION_BACKENDS = (
     'users.views.CustomBackend',
 
 )
+
+EMAIL_HOST = "smtp.qq.com"
+EMAIL_PORT = 25
+EMAIL_HOST_USER = "953743087@qq.com"
+EMAIL_HOST_PASSWORD = "wahwxsphwrgqbefd"
+EMAIL_USE_TLS = True
+EMAIL_FROM = "953743087@qq.com"

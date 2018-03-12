@@ -43,7 +43,7 @@ class UserProfile(AbstractUser):
 
 
 # 邮箱验证码，
-class EmailVerfyRecord(models.Model):
+class EmailVerifyRecord(models.Model):
     SEND_CHOICES = (
         ('register', u'注册'),
         ('forget', u'找回密码'),
