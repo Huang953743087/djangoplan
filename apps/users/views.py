@@ -1,9 +1,53 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.backends import ModelBackend
+from django.db.models import Q
 from django.shortcuts import render
 
 from django.views.generic.base import View
 
-# Create your views here.
-# 登陆页面
-# class LoginView(View):
-#     # 直接调用get方法去判断
-#     def get(self, request):
+from users.models import UserProfile
+
+
+def user_login(request):
+    #前端向后端发送的请求方式：get。post
+    #登陆为post请求
+    if request.method == 'POST':
+        user_name = request.POST.get('username', '')
+        pass_word = request.POST.get('password', '')
+        #成功返回user对象，失败返回null
+        user = authenticate(username=user_name, password=pass_word)
+
+        #如果不是null说明验证成功
+        if user is not None:
+            # login_in 两参数：request, user
+            # 实际是对request写了一部分东西进去，然后在render的时候：
+            # request是要render回去的。这些信息也就随着返回浏览器。完成登录
+            login(request, user)
+            # 跳转到首页，user ，request会被带到首页
+            return render(request, 'index.html')
+        #没有说明里面值是None,再次跳转到主页面
+        else:
+            return render(request, 'login.html', {"msg":"用户名或密码错误"})
+
+
+    elif request.method == 'GET':
+        # render渲染html并返回
+        # render三变量:request 模板名称， 一个字典写明传给前端的值
+        return render(request, 'login.html', {})
+
+
+class CustomBackend(ModelBackend):
+    def authenticate(self, username=None, password=None, **kwargs):
+        try:
+            # 不希望用户存在两个，get只能有一个。两个是get失败的一种原因 Q为使用并集查询
+
+            user = UserProfile.objects.get(Q(username=username)|Q(email=username))
+
+            # django的后台中密码加密：所以不能password==password
+            # UserProfile继承的AbstractUser中有def check_password(self, raw_password):
+
+            if user.check_password(password):
+                return user
+        except Exception as e:
+            return None
+
