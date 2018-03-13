@@ -195,4 +195,4 @@ class ModifyPwdView(View):
         # 验证失败说明密码位数不够。
         else:
             email = request.POST.get("email", "")
-            return render(request, "password_reset.html", {"email": email, "modiypwd_form":modiypwd_form})
+            return render(request, "password_reset.html", {"email": email, "modiypwd_form": modiypwd_form})

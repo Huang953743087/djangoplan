@@ -9,7 +9,7 @@ __time__ = '2018/3/12 18:49'
 
 from users.models import EmailVerifyRecord
 # 导入django自带邮件发送模块
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 # 导入设置的邮件信息
 from djangoplan.settings import EMAIL_FROM
 
@@ -63,7 +63,7 @@ def send_register_email(email, send_type="register"):
         )
 
         # 使用Django内置函数完成邮件发送。四个参数：主题，邮件内容，从哪里发，接受者list
-        msg = send_mail(email_title, email_body, EMAIL_FROM, [email])
+        msg = EmailMessage(email_title, email_body, EMAIL_FROM, [email])
         msg.content_subtype = "html"
         send_status = msg.send()
         # 如果发送成功

@@ -31,7 +31,10 @@ urlpatterns = [
     path("captcha/", include('captcha.urls')),
     # 验证激活是否成功
     re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name="user_active"),
+    # 忘记密码验证
     path('forget_pwd/', ForgetPWDView.as_view(), name='forget_pwd'),
+    # 重设密码
     re_path('reset/(?P<active_code>.*)/', ResetView.as_view(), name="reset_pwd"),
+    # 重设成功
     path('modify_pwd/', ModifyPwdView.as_view(), name="modify_pwd"),
 ]
