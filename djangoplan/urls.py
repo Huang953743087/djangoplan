@@ -15,14 +15,18 @@ Including another URLconf
 """
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
+from django.views.static import serve
 
 import xadmin
+from organization.views import OrgView
+from settings import MEDIA_ROOT
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPWDView, ResetView, ModifyPwdView
 
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     # TemplateView.as_view会将template转换为view
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    # 注册登录等用户相关 ↓↓↓↓ #
     # 登录界面
     path('login/',  LoginView.as_view(), name='login'),
     # 注册界面
@@ -37,4 +41,9 @@ urlpatterns = [
     re_path('reset/(?P<active_code>.*)/', ResetView.as_view(), name="reset_pwd"),
     # 重设成功
     path('modify_pwd/', ModifyPwdView.as_view(), name="modify_pwd"),
+    # 注册登录等用户相关 ↑↑↑↑ #
+    # 机构显示
+    path('org_list/', OrgView.as_view(), name='org_list'),
+    # 图片处理
+    re_path(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT })
 ]

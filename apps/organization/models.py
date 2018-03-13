@@ -21,9 +21,15 @@ class CityDict(models.Model):
 
 # 机构信息
 class CourseOrg(models.Model):
+    ORG_CHOICES = (
+        ("pxjg", u"培训机构"),
+        ("gx", u"高校"),
+        ("gr", u"个人"),
+    )
     name = models.CharField(max_length=50, verbose_name=u'机构名称')
     # 机构描述，后面替换为富文本展示
     desc = models.TextField(verbose_name=u'机构描述')
+
     click_nums = models.IntegerField(default=0, verbose_name=u'点击量')
     fav_nums = models.ImageField(
         upload_to='org/%Y/%m',
@@ -34,6 +40,8 @@ class CourseOrg(models.Model):
     # 可以让我们通过机构找到城市
     city = models.ForeignKey(CityDict, on_delete=models.CASCADE, verbose_name=u'所在城市')
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
+
+    category = models.CharField(max_length=20, choices=ORG_CHOICES, verbose_name=u"机构类别", default="pxjg")
 
     class Meta:
         verbose_name = u'课程机构'
@@ -62,3 +70,5 @@ class Teacher(models.Model):
 
     def __str__(self):
         return '{0}机构的{1}老师'.format(self.org, self.name)
+
+
