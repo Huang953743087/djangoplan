@@ -4,6 +4,9 @@ from datetime import datetime
 
 
 # 课程信息
+from organization.models import CourseOrg
+
+
 class Course(models.Model):
     # 课程等级
     DEGREE_CHOICES = (
@@ -11,6 +14,7 @@ class Course(models.Model):
         ('zj', u'中级'),
         ('gj', u'高级'),
     )
+    course_org = models.ForeignKey(CourseOrg, on_delete=models.CASCADE, verbose_name=u"所属机构", null=True, blank=True)
     name = models.CharField(max_length=50, verbose_name=u'课程名')
     desc = models.CharField(max_length=300, verbose_name=u'课程描述')
     # textfield可以不输入长度，输入可以无限长,教程说之后改为富文本

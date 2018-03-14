@@ -18,8 +18,8 @@ from django.views.generic import TemplateView
 from django.views.static import serve
 
 import xadmin
-from organization.views import OrgView
-from settings import MEDIA_ROOT
+from organization.views import OrgView, OrgHomeView
+from djangoplan.settings import MEDIA_ROOT
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPWDView, ResetView, ModifyPwdView
 
 urlpatterns = [
@@ -43,7 +43,8 @@ urlpatterns = [
     path('modify_pwd/', ModifyPwdView.as_view(), name="modify_pwd"),
     # 注册登录等用户相关 ↑↑↑↑ #
     # 机构显示
-    path('org_list/', OrgView.as_view(), name='org_list'),
+    # path('org_list/', OrgView.as_view(), name='org_list'),
+    path('org/', include('organization.urls', namespace='org')),
     # 图片处理
-    re_path(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT })
+    re_path(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
 ]
