@@ -25,8 +25,8 @@
 					<!--登录后跳转-->
 
 
-                        <a style="color:white" class="fr registerbtn" href="register.html">注册</a>
-                        <a style="color:white" class="fr loginbtn" href="login.html">登录</a>
+                        <a style="color:white" class="fr registerbtn" href="{% url 'register' %}">注册</a>
+                        <a style="color:white" class="fr loginbtn" href="{% url 'login' %}">登录</a>
 
 
 
@@ -35,7 +35,7 @@
 
             <div class="middle">
                 <div class="wp">
-                    <a href="index.html"><img class="fl" src="{% static 'images/logo.jpg' %}"/></a>
+                    <a href="{% url 'index' %}"><img class="fl" src="{% static 'images/logo.jpg' %}"/></a>
                     <div class="searchbox fr">
                         <div class="selectContainer fl">
                             <span class="selectOption" id="jsSelectOption" data-value="course">
@@ -58,16 +58,16 @@
 				<div class="nav">
 					<div class="wp">
 						<ul>
-							<li ><a href="index.html">首页</a></li>
+							<li ><a href="{% url 'index' %}">首页</a></li>
 							<li >
-								<a href="course-list.html">
+								<a href="{% url 'course:list' %}">
 									公开课<img class="hot" src="{% static 'images/nav_hot.png' %}">
 								</a>
 							</li>
 							<li >
 								<a href="teachers-list.html">授课教师</a>
 							</li>
-							<li class="active" ><a href="org-list.html">授课机构</a></li>
+							<li class="active" ><a href="{% url 'org:org_list' %}">授课机构</a></li>
 						</ul>
 					</div>
 				</div>
@@ -81,7 +81,7 @@
     <section>
         <div class="wp">
             <ul  class="crumbs">
-                <li><a href="index.html">首页</a>></li>
+                <li><a href="{% url 'index' %}">首页</a>></li>
                 <li>课程机构</li>
             </ul>
         </div>

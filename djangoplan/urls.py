@@ -47,4 +47,6 @@ urlpatterns = [
     path('org/', include('organization.urls', namespace='org')),
     # 图片处理
     re_path(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
+    # 课程处理
+    path('course/', include('courses.urls', namespace='course')),
 ]

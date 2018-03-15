@@ -21,6 +21,13 @@ class OrgView(View):
         all_orgs = CourseOrg.objects.all()
         # 统计机构数量
         org_nums = all_orgs.count()
+        sort = request.GET.get('sort', "")
+        # 排序
+        if sort:
+            if sort == "students":
+                all_orgs = all_orgs.order_by("-students")
+            elif sort == "courses":
+                all_orgs = all_orgs.order_by("-course_nums")
         # 对课程机构进行分页
         # 尝试获取前台get请求传递过来的page参数
         # 如果是不合法的配置参数默认返回第一页
@@ -32,10 +39,11 @@ class OrgView(View):
         p = Paginator(all_orgs, 5, request=request)
         orgs = p.page(page)
 
-        render(request, 'org-list.html', {
+        return render(request, 'org-list.html', {
             'all_citys': all_citys,
             'all_orgs': orgs,
             'org_nums': org_nums,
+            'sort': sort,
         })
 
 
