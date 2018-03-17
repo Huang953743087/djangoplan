@@ -69,4 +69,26 @@ def send_register_email(email, send_type="register"):
         # 如果发送成功
         if send_status:
             return True
+    elif send_type=='update_email':
+        code = random_str(4)
+        # 实例化一个邮箱验证码对象
+        # 进行各种对象的保存
+        email_record = EmailVerifyRecord()
+        email_record.code = code
+        email_record.send_type = send_type
+        email_record.email = email
+        email_record.save()
+        email_title = 'huang的练习, 重设邮箱验证'
+        email_body = loader.render_to_string(
+            "email_update_email.html",  # 需要渲染的html模板
+            {
+                "active_code": code  # 参数
+            }
+        )
+        msg = EmailMessage(email_title, email_body, EMAIL_FROM, [email])
+        msg.content_subtype = "html"
+        send_status = msg.send()
+        if send_status:
+            return True
+
 

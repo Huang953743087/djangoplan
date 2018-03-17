@@ -49,4 +49,6 @@ urlpatterns = [
     re_path(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
     # 课程处理
     path('course/', include('courses.urls', namespace='course')),
+    # 用户信息处理
+    path('user/', include('users.urls', namespace='user')),
 ]

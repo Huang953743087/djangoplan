@@ -2,7 +2,8 @@
 #-*- coding: utf-8 -*-
 __author__ = 'huang'
 __time__ = '2018/3/14 16:20'
-from organization.views import OrgView, OrgHomeView, OrgCourseView, OrgTeacherView, OrgDescView, AddFavView
+from organization.views import OrgView, OrgHomeView, OrgCourseView, OrgTeacherView, OrgDescView, AddFavView, \
+    TeacherListView, TeacherDescView
 
 from django.urls import path, re_path
 
@@ -20,4 +21,8 @@ urlpatterns = [
     re_path('teacher/(?P<org_id>\d+)/', OrgTeacherView.as_view(), name="org_teacher"),
     # 添加收藏
     path('add_fav/', AddFavView.as_view(), name="add_fav"),
-]
+    # 访问讲师列表
+    path('teacher_list/', TeacherListView.as_view(), name="teacher_list"),
+    # 教师详情
+    re_path('teacher/detail/(?P<teacher_id>\d+)/', TeacherDescView.as_view(), name="teacher_detail"),
+   ]

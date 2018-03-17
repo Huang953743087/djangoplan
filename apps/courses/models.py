@@ -14,7 +14,7 @@ class Course(models.Model):
         ('zj', u'中级'),
         ('gj', u'高级'),
     )
-    teacher = models.ForeignKey(Teacher, verbose_name=u"讲师", null=True, blank=True)
+    teacher = models.ForeignKey(Teacher, verbose_name=u"讲师", on_delete=models.CASCADE, null=True, blank=True)
     course_org = models.ForeignKey(CourseOrg, on_delete=models.CASCADE, verbose_name=u"所属机构", null=True, blank=True)
     name = models.CharField(max_length=50, verbose_name=u'课程名')
     desc = models.CharField(max_length=300, verbose_name=u'课程描述')

@@ -5,7 +5,7 @@ from django.views.generic.base import View
 
 from operation.models import UserFavorite
 from organization.forms import UserAskForm
-from .models import CourseOrg, CityDict
+from .models import CourseOrg, CityDict, Teacher
 from pure_pagination import PageNotAnInteger, EmptyPage, Paginator
 from django.http import HttpResponse
 
@@ -27,7 +27,7 @@ class OrgView(View):
             if sort == "students":
                 all_orgs = all_orgs.order_by("-students")
             elif sort == "courses":
-                all_orgs = all_orgs.order_by("-course_nums")
+                all_orgs = all_orgs.order_by("-click_nums")
         # 对课程机构进行分页
         # 尝试获取前台get请求传递过来的page参数
         # 如果是不合法的配置参数默认返回第一页
@@ -149,11 +149,79 @@ class OrgTeacherView(View):
         if request.user.is_authenticated:
             if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
                 has_fav = True
+                course_org.fav_nums += 1
+                course_org.save()
         return render(request, 'org-detail-teachers.html', {
             'all_teachers': all_teachers,
             'course_org': course_org,
             "current_page": current_page,
             "has_fav": has_fav
+        })
+
+
+class TeacherListView(View):
+    def get(self, request):
+        # 获取所有机构
+        all_teachers = Teacher.objects.all()
+        # 统计机构数量
+        teacher_nums = all_teachers.count()
+        sort = request.GET.get('sort', "")
+        hot_teacher = all_teachers.order_by("-course_nums")[:3]
+        # 排序
+        if sort:
+            if sort == "hot":
+                all_teachers = all_teachers.order_by("-course_nums")
+        # 对课程机构进行分页
+        # 尝试获取前台get请求传递过来的page参数
+        # 如果是不合法的配置参数默认返回第一页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        # 从all——org中每页取5个
+        p = Paginator(all_teachers, 5, request=request)
+        teachers = p.page(page)
+
+        return render(request, 'teachers-list.html', {
+            'all_teachers': teachers,
+            'teacher_nums': teacher_nums,
+            'sort': sort,
+            'hot_teacher': hot_teacher,
+        })
+
+
+class TeacherDescView(View):
+    """
+   教师描述详情页
+    """
+    def get(self, request, teacher_id):
+        # 向前端传值，表明现在在详情页
+        current_page = "desc"
+        # 根据id取到教师
+        hot_teacher = Teacher.objects.all().order_by('-click_nums')[:3]
+        teacher = Teacher.objects.get(id=int(teacher_id))
+        # 通过课程机构找到课程。内建的变量，找到指向这个字段的外键引用
+        hot_course = teacher.course_set.all().order_by('-click_nums')[:3]
+        # 向前端传值说明用户是否收藏
+        # 必须是用户已登录我们才需要判断。
+        has_fav_teacher = False
+        if UserFavorite.objects.filter(user=request.user, fav_type=3, fav_id=teacher.id):
+            has_fav_teacher = True
+            teacher.fav_nums += 1
+            teacher.save()
+        has_fav_org = False
+        if UserFavorite.objects.filter(user=request.user, fav_type=2, fav_id=teacher.org.id):
+            has_fav_org = True
+            teacher.org.fav_nums += 1
+            teacher.org.save()
+
+        return render(request, 'teacher-detail.html', {
+            'teacher': teacher,
+            "current_page": current_page,
+            "has_fav_teacher": has_fav_teacher,
+            "has_fav_org": has_fav_org,
+            'hot_course': hot_course,
+            'hot_teacher': hot_teacher,
         })
 
 

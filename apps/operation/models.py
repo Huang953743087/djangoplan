@@ -40,14 +40,13 @@ class CourseComments(models.Model):
 
 # 用户对于课程,机构，讲师的收藏
 class UserFavorite(models.Model):
-    # 会涉及四个外键。用户，课程，机构，讲师import
     TYPE_CHOICES = (
         (1, u"课程"),
         (2, u"课程机构"),
         (3, u"讲师")
     )
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, verbose_name=u"用户")
-    # 直接保存用户的id.
+    # 直接保存收藏类型的id.
     fav_id = models.IntegerField(default=0)
     # 表明收藏的是哪种类型。
     fav_type = models.IntegerField(

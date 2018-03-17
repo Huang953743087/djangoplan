@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -16,6 +17,12 @@ class CourseListView(View):
     """
     def get(self, request):
         all_course = Course.objects.all()
+        search_keywords = request.GET.get('keywords', '')
+        if search_keywords:
+            # 在name字段进行操作,做like语句的操作。i代表不区分大小写
+            # or操作使用Q
+            all_course = all_course.filter(Q(name__icontains=search_keywords) | Q(desc__icontains=search_keywords) | Q(
+                detail__icontains=search_keywords))
         # 对课程机构进行分页
         # 尝试获取前台get请求传递过来的page参数
         # 如果是不合法的配置参数默认返回第一页
@@ -38,6 +45,7 @@ class CourseListView(View):
             'all_courses': course,
             'sort': sort,
             'hot_courses': hot_courses,
+            "search_keywords": search_keywords,
         })
 
 
@@ -160,7 +168,7 @@ class AddCommentsView(View):
 class VideoPlayView(LoginRequiredMixin, View):
     login_url = '/login/'
     redirect_field_name = 'next'
-    
+
     def get(self, request, video_id):
         # 此处的id为表默认为我们添加的值。
         video = Video.objects.get(id=int(video_id))

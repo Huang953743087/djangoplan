@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
+from users.models import UserProfile
+
 __author__ = 'huang'
 __time__ = '2018/3/12 11:46'
 
@@ -41,3 +43,19 @@ class ModifyPwdForm(forms.Form):
     password1 = forms.CharField(required=True, min_length=5)
     # 密码不能小于5位
     password2 = forms.CharField(required=True, min_length=5)
+
+
+# 用于文件上传，修改头像
+class UploadImageForm(forms.ModelForm):
+
+    class Meta:
+        model = UserProfile
+        fields = ['image']
+
+
+# 修改用户信息
+class UpdateUserInfoForm(forms.ModelForm):
+
+    class Meta:
+        model = UserProfile
+        fields = ['nick_name', 'gender', 'birthday', 'address', 'mobile']

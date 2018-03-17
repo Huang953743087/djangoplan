@@ -31,7 +31,8 @@ class CourseOrg(models.Model):
     desc = models.TextField(verbose_name=u'机构描述')
 
     click_nums = models.IntegerField(default=0, verbose_name=u'点击量')
-    fav_nums = models.ImageField(
+    fav_nums = models.IntegerField(default=0, verbose_name=u'收藏量')
+    image = models.ImageField(
         upload_to='org/%Y/%m',
         verbose_name=u'封面图',
         max_length=100)
@@ -78,10 +79,15 @@ class Teacher(models.Model):
         max_length=100)
     you_need_know = models.CharField(max_length=300, default=u"好好学习天天向上", verbose_name=u"课程须知")
     teacher_tell = models.CharField(max_length=300, default=u"按时交作业,不然叫家长", verbose_name=u"老师告诉你")
+    age = models.IntegerField(default=18, verbose_name=u"年龄")
 
     class Meta:
         verbose_name = u"教师"
         verbose_name_plural = verbose_name
+
+    # 获取讲师课程数
+    def get_course_nums(self):
+        return self.course_set.all().count()
 
     def __str__(self):
         return '{0}机构的{1}老师'.format(self.org, self.name)
