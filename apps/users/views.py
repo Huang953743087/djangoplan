@@ -1,20 +1,21 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import PageNotAnInteger, Paginator
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 
 from django.views.generic.base import View
 
+from courses.models import Course
 from operation.models import UserCourse, UserFavorite, UserMessage
 from organization.models import CourseOrg
 from users.forms import LoginForm, RegisterForm, ActiveForm, ForgetPWDForm, ModifyPwdForm, UploadImageForm, \
     UpdateUserInfoForm
-from users.models import UserProfile,EmailVerifyRecord
-
+from users.models import UserProfile, EmailVerifyRecord, Banner
 
 # def user_login(request):
 #     #前端向后端发送的请求方式：get。post
@@ -65,6 +66,11 @@ class RegisterView(View):
             user_profile = UserProfile()
             user_profile.username = user_name
             user_profile.email = user_name
+            user_message = UserMessage()
+            user_message.user = user_profile.id
+            user_message.message = "欢迎注册huang的练习!!"
+            user_message.save()
+
             # 加密保存
             user_profile.password = make_password(pass_word)
             # 新用户默认处于未激活状态
@@ -104,6 +110,14 @@ class LoginView(View):
 
         else:
             return render(request, 'login.html', {'login_form' : login_form})
+
+
+# 退出登录
+class LogoutView(View):
+    def get(self, request):
+        # django 自带退出方法
+        logout(request)
+        return HttpResponseRedirect(reverse("index"))
 
 
 # 登陆可使用用户名或邮箱验证
@@ -395,6 +409,10 @@ class MyMessageView(LoginRequiredMixin, View):
 
     def get(self, request):
         all_message = UserMessage.objects.filter(user=request.user.id)
+        all_unread_messages = UserMessage.objects.filter(user=request.user.id, has_read=False)
+        for unread_message in all_unread_messages:
+            unread_message.has_read = True
+            unread_message.save()
         # 尝试获取前台get请求传递过来的page参数
         # 如果是不合法的配置参数默认返回第一页
         try:
@@ -409,3 +427,47 @@ class MyMessageView(LoginRequiredMixin, View):
         })
 
 
+class IndexView(View):
+    def get(self, request):
+        # 轮播图
+        all_banner = Banner.objects.all().order_by('index')[:5]
+        # 非轮播课程
+        courses = Course.objects.filter(is_banner=False)[:6]
+        # 轮播课程
+        banner_course = Course.objects.filter(is_banner=True)[:3]
+        # 机构列表
+        org_list = CourseOrg.objects.all().order_by('-click_nums')[:15]
+        return render(request, 'index.html',
+                      {
+                          'all_banner': all_banner,
+                          'all_course': courses,
+                          'banner_course': banner_course,
+                          'all_org': org_list,
+                      })
+
+
+# 404对应处理view
+from django.shortcuts import  render_to_response
+def page_not_found(request):
+
+    response = render_to_response("404.html", {
+
+    })
+    # 设置response的状态码
+    response.status_code = 404
+    return response
+
+def page_is_403(request):
+    response = render_to_response("403.html", {
+    })
+    # 设置response的状态码
+    response.status_code = 403
+    return response
+
+
+def page_is_500(request):
+    response = render_to_response("500.html", {
+    })
+    # 设置response的状态码
+    response.status_code = 500
+    return response

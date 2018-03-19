@@ -20,15 +20,22 @@ from django.views.static import serve
 import xadmin
 from organization.views import OrgView, OrgHomeView
 from djangoplan.settings import MEDIA_ROOT
-from users.views import LoginView, RegisterView, ActiveUserView, ForgetPWDView, ResetView, ModifyPwdView
+from users.views import LoginView, RegisterView, ActiveUserView, ForgetPWDView, ResetView, ModifyPwdView, LogoutView, \
+    IndexView
 
+# 全局404页面配置
+handler404 = 'users.views.page_not_found'
+handler403 = 'users.views.page_is_403'
+handler500 = 'users.views.page_is_500'
 urlpatterns = [
     path('xadmin/', xadmin.site.urls),
     # TemplateView.as_view会将template转换为view
-    path('', TemplateView.as_view(template_name='index.html'), name='index'),
+    path('', IndexView.as_view(), name='index'),
     # 注册登录等用户相关 ↓↓↓↓ #
     # 登录界面
     path('login/',  LoginView.as_view(), name='login'),
+    # 登出界面
+    path('logout/', LogoutView.as_view(), name="logout"),
     # 注册界面
     path('register/', RegisterView.as_view(), name='register'),
     # 验证码

@@ -25,4 +25,5 @@ urlpatterns = [
     path('fav_course/', FavCourseView.as_view(), name='fav_course'),
     path('fav_org/', FavOrgView.as_view(), name='fav_org'),
     path('fav_teacher/', FavTeacherView.as_view(), name='fav_teacher'),
+
 ]

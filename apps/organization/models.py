@@ -29,7 +29,7 @@ class CourseOrg(models.Model):
     name = models.CharField(max_length=50, verbose_name=u'机构名称')
     # 机构描述，后面替换为富文本展示
     desc = models.TextField(verbose_name=u'机构描述')
-
+    tag = models.CharField(max_length=10, default=u"国内名校", verbose_name=u"机构标签")
     click_nums = models.IntegerField(default=0, verbose_name=u'点击量')
     fav_nums = models.IntegerField(default=0, verbose_name=u'收藏量')
     image = models.ImageField(

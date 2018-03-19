@@ -27,6 +27,7 @@ class Course(models.Model):
     # 点击开始学习就计算人数
     students = models.IntegerField(default=0, verbose_name=u'学习人数')
     fav_nums = models.IntegerField(default=0, verbose_name=u'收藏人数')
+    is_banner = models.BooleanField(default=False, verbose_name=u"是否轮播")
     tag = models.CharField(max_length=15, verbose_name=u"课程标签", default=u"")
     image = models.ImageField(
         upload_to='courses/%Y/%m',

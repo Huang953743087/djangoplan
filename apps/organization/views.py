@@ -3,6 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 from django.views.generic.base import View
 
+from courses.models import Course
 from operation.models import UserFavorite
 from organization.forms import UserAskForm
 from .models import CourseOrg, CityDict, Teacher
@@ -200,6 +201,8 @@ class TeacherDescView(View):
         # 根据id取到教师
         hot_teacher = Teacher.objects.all().order_by('-click_nums')[:3]
         teacher = Teacher.objects.get(id=int(teacher_id))
+        teacher.click_nums += 1
+        teacher.save()
         # 通过课程机构找到课程。内建的变量，找到指向这个字段的外键引用
         hot_course = teacher.course_set.all().order_by('-click_nums')[:3]
         # 向前端传值说明用户是否收藏
@@ -207,13 +210,9 @@ class TeacherDescView(View):
         has_fav_teacher = False
         if UserFavorite.objects.filter(user=request.user, fav_type=3, fav_id=teacher.id):
             has_fav_teacher = True
-            teacher.fav_nums += 1
-            teacher.save()
         has_fav_org = False
         if UserFavorite.objects.filter(user=request.user, fav_type=2, fav_id=teacher.org.id):
             has_fav_org = True
-            teacher.org.fav_nums += 1
-            teacher.org.save()
 
         return render(request, 'teacher-detail.html', {
             'teacher': teacher,
@@ -244,9 +243,41 @@ class AddFavView(View):
         exist_records = UserFavorite.objects.filter(user=request.user, fav_id=int(id), fav_type=int(type))
         if exist_records:
             exist_records.delete()
+            # 取消收藏的同时减少收藏数
+            if int(type) == 1:
+                course = Course.objects.get(id=int(id))
+                course.fav_nums -= 1
+                if course.fav_nums < 0:
+                    course.fav_nums = 0
+                course.save()
+            elif int(type) == 2:
+                org = CourseOrg.objects.get(id=int(id))
+                org.fav_nums -= 1
+                if org.fav_nums < 0:
+                    org.fav_nums = 0
+                org.save()
+            elif int(type) == 3:
+                teacher = Teacher.objects.get(id=int(id))
+                teacher.fav_nums -= 1
+                if teacher.fav_nums < 0:
+                    teacher.fav_nums = 0
+                teacher.save()
             return HttpResponse('{"status":"success", "msg":"取消收藏"}', content_type='application/json')
         else:
             user_fav = UserFavorite()
+            # 添加收藏的同时增加收藏数量
+            if int(type) == 1:
+                course = Course.objects.get(id=int(id))
+                course.fav_nums += 1
+                course.save()
+            elif int(type) == 2:
+                org = CourseOrg.objects.get(id=int(id))
+                org.fav_nums += 1
+                org.save()
+            elif int(type) == 3:
+                teacher = Teacher.objects.get(id=int(id))
+                teacher.fav_nums += 1
+                teacher.save()
             # 过滤掉未取到fav_id type的默认情况
             if int(type) > 0 and int(id) > 0:
                 user_fav.fav_id = int(id)
