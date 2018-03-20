@@ -53,7 +53,7 @@ urlpatterns = [
     # path('org_list/', OrgView.as_view(), name='org_list'),
     path('org/', include('organization.urls', namespace='org')),
     # 图片处理
-    re_path(r'^media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
+    re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
     # 课程处理
     path('course/', include('courses.urls', namespace='course')),
     # 用户信息处理

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 #-*- coding: utf-8 -*-
-from users.views import UserInfoView, UpdateImageView, UpdatePWDView, SendEmailView, UpdateEmailView, UserCourseView
+from users.views import UserInfoView, UpdateImageView, UpdatePWDView, SendEmailView, UpdateEmailView, UserCourseView, \
+    MyMessageView
 from users.views import FavCourseView, FavOrgView, FavTeacherView
 __author__ = 'huang'
 __time__ = '2018/3/17 16:14'
@@ -21,6 +22,8 @@ urlpatterns = [
     path('update_email/', UpdateEmailView.as_view(), name="update_email"),
     # 用户课程列表
     path('courses/', UserCourseView.as_view(), name='user_course'),
+    # 用户消息页
+    path('message/', MyMessageView.as_view(), name='user_massage'),
     # 用户收藏的各类
     path('fav_course/', FavCourseView.as_view(), name='fav_course'),
     path('fav_org/', FavOrgView.as_view(), name='fav_org'),

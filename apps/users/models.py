@@ -1,6 +1,5 @@
 from datetime import datetime
 from django.db import models
-from operation.models import UserMessage
 from django.contrib.auth.models import AbstractUser
 # Create your models here.
 
@@ -40,10 +39,6 @@ class UserProfile(AbstractUser):
 
     def __str__(self):
         return self.username
-
-    def unread_nums(self):
-
-        return UserMessage.objects.filter(has_read=False, user=self.id).count()
 
 
 # 邮箱验证码，

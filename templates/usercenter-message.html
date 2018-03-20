@@ -8,8 +8,8 @@
     <section>
         <div class="wp">
             <ul  class="crumbs">
-                <li><a href="index.html">首页</a>></li>
-                <li><a href="/user/home/">个人中心</a>></li>
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'user:user_info' %}">个人中心</a>></li>
                 <li>我的消息</li>
             </ul>
         </div>
@@ -27,7 +27,7 @@
 		<div class="personal_des permessage">
 			<div class="head">
 				<ul class="tab_header messagehead">
-					<li class="active"><a href="/user/message/">个人消息</a> </li>
+					<li class="active"><a href="{% url 'user:user_massage' %}">个人消息</a> </li>
 				</ul>
 
 

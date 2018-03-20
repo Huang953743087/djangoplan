@@ -97,6 +97,7 @@ class CourseInfoView(LoginRequiredMixin, View):
         # 获得所有的下载文件
         # 选出学了这门课的学生关系
         user_courses = UserCourse.objects.filter(course=course)
+        # 学习人数+1
         course.students += 1
         course.save()
         # 从关系中取出user_id

@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" >
-	<title>{% block title %}个人信息- 慕学在线网{% endblock %}</title>
+	<title>{% block title %}个人信息- huang的练习{% endblock %}</title>
 	<link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
@@ -25,7 +25,7 @@
 		<div  class="header2 header">
  			<div class="top">
 				<div class="wp">
-					<div class="fl"><p>服务电话：<b>33333333</b></p></div>
+					<div class="fl"><p>服务电话：<b>23333</b></p></div>
 					<!--登录后跳转-->
 
 
@@ -43,12 +43,12 @@
 	                                </dd>
                                 </dl>
                                 <div class="btn">
-	                                <a class="personcenter fl" href="usercenter-info.html">进入个人中心</a>
-	                                <a class="fr" href="/logout/">退出</a>
+	                                <a class="personcenter fl" href="{% url 'user:user_info' %}">进入个人中心</a>
+	                                <a class="fr" href="{% url 'logout' %}">退出</a>
                                 </div>
                             </div>
                         </div>
-                        <a href="usercenter-message.html">
+                        <a href="{% url 'user:user_massage' %}">
                             <div class="msg-num"><span id="MsgNum">0</span></div>
                         </a>
 
@@ -58,8 +58,8 @@
 
     <div class="middle">
         <div class="wp">
-            <a href="index.html"><img class="fl" src="{% static 'images/logo2.png' %}"/></a>
-            <h1>我的慕学网</h1>
+            <a href="{% url 'index' %}"><img class="fl" src="{% static 'images/logo2.png' %}"/></a>
+            <h1>huang的练习</h1>
         </div>
     </div>
 			</div>
@@ -73,8 +73,8 @@
     <section>
         <div class="wp">
             <ul  class="crumbs">
-                <li><a href="index.html">首页</a>></li>
-                <li><a href="/user/home/">个人中心</a>></li>
+                <li><a href="{% url 'index' %}">首页</a>></li>
+                <li><a href="{% url 'user:user_info' %}">个人中心</a>></li>
                 <li>个人信息</li>
             </ul>
         </div>
@@ -85,11 +85,13 @@
 	<div class="wp list personal_list">
 	<div class="left">
         <ul>
-            <li class="active2"><a href="usercenter-info.html">个人资料</a></li>
-            <li ><a href="usercenter-mycourse.html">我的课程</a></li>
-            <li ><a href="usercenter-fav-course.html">我的收藏</a></li>
+            <li class="active2"><a href="{% url 'user:user_info' %}">个人资料</a></li>
+            <li ><a href="{% url 'user:user_course' %}">我的课程</a></li>
+            <li ><a href="{% url 'user:fav_course' %}">我的收藏课程</a></li>
+            <li ><a href="{% url 'user:fav_org' %}">我的收藏机构</a></li>
+            <li ><a href="{% url 'user:fav_teacher' %}">我的收藏教师</a></li>
             <li >
-                <a href="usercenter-message.html" style="position: relative;">
+                <a href="{% url 'user:user_massage' %}" style="position: relative;">
                     我的消息
                 </a>
             </li>
@@ -109,7 +111,7 @@
 <section>
     <ul class="sidebar">
         <li class="qq">
-            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=2023525077&site=qq&menu=yes"></a>
+            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=953743087&site=qq&menu=yes"></a>
         </li>
         <li class="totop"></li>
     </ul>
@@ -200,7 +202,7 @@
         <form id="jsSetNewPwdForm">
             <div class="box">
                 <span class="word2">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</span>
-                <input type="password" name="password" id="jsResetPwd" placeholder="请输入新密码"/>
+                <input type="password" name="password1" id="jsResetPwd" placeholder="请输入新密码"/>
             </div>
             <div class="box">
                 <span class="word2">确&nbsp;认&nbsp;密&nbsp;码</span>
@@ -215,7 +217,7 @@
                 <input type="hidden" name="mobile" id="jsInpResetMobil" />
                 <input id="jsSetNewPwdBtn" type="button" value="提交" />
             </div>
-            <input type='hidden' name='csrfmiddlewaretoken' value='DaP7IUKm9FA9nELA9YUlYYWpyIDdCiIP' />
+            {% csrf_token %}
         </form>
     </div>
     <div class="forgetbox dialogbox">
@@ -237,6 +239,7 @@
                     <input type="hidden" name="sms_type" value="1">
                     <input id="jsFindPwdBtn" type="button" value="提交" />
                 </div>
+                {% csrf_token %}
             </form>
         </div>
     </div>

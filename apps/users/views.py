@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
+from django.shortcuts import  render_to_response
 from django.views.generic.base import View
 
 from courses.models import Course
@@ -372,7 +372,7 @@ class FavTeacherView(LoginRequiredMixin, View):
     # fav_orgs存放了id，需要通过id找到机构对象
         for fav_teacher in fav_teachers:
             # 取出fav_id
-            teacher_id = fav_teachers.fav_id
+            teacher_id = fav_teacher.fav_id
             # 获取这个机构对象
             teacher = CourseOrg.objects.get(id=teacher_id)
             teacher_list.append(teacher)
@@ -439,15 +439,14 @@ class IndexView(View):
         org_list = CourseOrg.objects.all().order_by('-click_nums')[:15]
         return render(request, 'index.html',
                       {
-                          'all_banner': all_banner,
-                          'all_course': courses,
-                          'banner_course': banner_course,
+                          'all_banners': all_banner,
+                          'all_courses': courses,
+                          'banner_courses': banner_course,
                           'all_org': org_list,
                       })
 
 
 # 404对应处理view
-from django.shortcuts import  render_to_response
 def page_not_found(request):
 
     response = render_to_response("404.html", {
@@ -456,6 +455,7 @@ def page_not_found(request):
     # 设置response的状态码
     response.status_code = 404
     return response
+
 
 def page_is_403(request):
     response = render_to_response("403.html", {
