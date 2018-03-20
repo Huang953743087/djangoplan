@@ -11,7 +11,7 @@ from pure_pagination import PageNotAnInteger, EmptyPage, Paginator
 from django.http import HttpResponse
 
 
-class OrgView(View):
+class OrgListView(View):
     """
     机构列表
     """
@@ -29,6 +29,7 @@ class OrgView(View):
                 all_orgs = all_orgs.order_by("-students")
             elif sort == "courses":
                 all_orgs = all_orgs.order_by("-click_nums")
+        hot_orgs = all_orgs.order_by("-click_nums")[:5]
         # 对课程机构进行分页
         # 尝试获取前台get请求传递过来的page参数
         # 如果是不合法的配置参数默认返回第一页
@@ -44,6 +45,7 @@ class OrgView(View):
             'all_citys': all_citys,
             'all_orgs': orgs,
             'org_nums': org_nums,
+            'hot_orgs':hot_orgs,
             'sort': sort,
         })
 
@@ -167,11 +169,11 @@ class TeacherListView(View):
         # 统计机构数量
         teacher_nums = all_teachers.count()
         sort = request.GET.get('sort', "")
-        hot_teacher = all_teachers.order_by("-course_nums")[:3]
+        hot_teacher = all_teachers.order_by("-click_nums")[:3]
         # 排序
         if sort:
             if sort == "hot":
-                all_teachers = all_teachers.order_by("-course_nums")
+                all_teachers = all_teachers.order_by("-click_nums")
         # 对课程机构进行分页
         # 尝试获取前台get请求传递过来的page参数
         # 如果是不合法的配置参数默认返回第一页

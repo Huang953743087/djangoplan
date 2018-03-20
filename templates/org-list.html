@@ -89,9 +89,8 @@
                             <li class="c8" style="padding-left:18px;">{{ course_org.address }}</li>
                             <li class="pic10" style="padding-left:18px;">经典课程：
 
-                                    <a href="/diary/19/">c语言基础入门</a>
+                                    <a href="#">c语言基础入门</a>
 
-                                    <a href="/diary/16/">数据库基础</a>
 
                             </li>
                         </ul>
@@ -102,6 +101,7 @@
 
 
 		</div>
+        </div>
 		 <div class="pageturn">
             <ul class="pagelist">
             {% if all_orgs.has_previous %}
@@ -128,7 +128,7 @@
 
             </ul>
         </div>
-		</div>
+
 	</div>
 	<div class="right companyright">
 			<div class="head">我要学习</div>
@@ -154,7 +154,7 @@
 		<div class="right companyrank layout">
 			<div class="head">授课机构排名</div>
 
-            {% for org in all_orgs %}
+            {% for org in hot_orgs %}
                 <dl class="des">
                     <dt class="num fl">{{ org.click_nums }}</dt>
                     <dd>
@@ -180,7 +180,7 @@
             $.ajax({
                 cache: false,
                 type: "POST",
-                url:"{% url "org:add_ask" %}",
+                url:'',
                 data:$('#jsStayForm').serialize(),
                 async: true,
                 success: function(data) {

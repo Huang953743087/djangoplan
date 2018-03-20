@@ -2,15 +2,15 @@
 #-*- coding: utf-8 -*-
 __author__ = 'huang'
 __time__ = '2018/3/14 16:20'
-from organization.views import OrgView, OrgHomeView, OrgCourseView, OrgTeacherView, OrgDescView, AddFavView, \
+from organization.views import OrgListView, OrgHomeView, OrgCourseView, OrgTeacherView, OrgDescView, AddFavView, \
     TeacherListView, TeacherDescView
 
 from django.urls import path, re_path
 
 app_name = 'organization'
 urlpatterns = [
-    # 课程机构列表url
-    path('list/', OrgView.as_view(), name='org_list'),
+    # 课程机构列表
+    path('list/', OrgListView.as_view(), name='org_list'),
     # 机构首页
     re_path('home/(?P<org_id>\d+)/', OrgHomeView.as_view(), name="org_home"),
     # 访问课程

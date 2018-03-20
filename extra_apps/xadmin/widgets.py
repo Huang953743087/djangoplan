@@ -30,11 +30,7 @@ class AdminDateWidget(forms.DateInput):
         super(AdminDateWidget, self).__init__(attrs=final_attrs, format=format)
 
     def render(self, name, value, attrs=None):
-        input_html = [ht for ht in super(AdminSplitDateTime, self).render(
-                name, value, attrs).split('/><') if ht != '']
-        if (len(input_html)>1):
-            input_html[0] = input_html[0] + "/>"
-            input_html[1] = "<" + input_html[1]
+        input_html = super(AdminDateWidget, self).render(name, value, attrs)
         return mark_safe('<div class="input-group date bootstrap-datepicker"><span class="input-group-addon"><i class="fa fa-calendar"></i></span>%s'
                          '<span class="input-group-btn"><button class="btn btn-default" type="button">%s</button></span></div>' % (input_html, _(u'Today')))
 
@@ -52,11 +48,7 @@ class AdminTimeWidget(forms.TimeInput):
         super(AdminTimeWidget, self).__init__(attrs=final_attrs, format=format)
 
     def render(self, name, value, attrs=None):
-        input_html = [ht for ht in super(AdminSplitDateTime, self).render(
-            name, value, attrs).split('/><') if ht != '']
-        if (len(input_html) > 1):
-            input_html[0] = input_html[0] + "/>"
-            input_html[1] = "<" + input_html[1]
+        input_html = super(AdminTimeWidget, self).render(name, value, attrs)
         return mark_safe('<div class="input-group time bootstrap-clockpicker"><span class="input-group-addon"><i class="fa fa-clock-o">'
                          '</i></span>%s<span class="input-group-btn"><button class="btn btn-default" type="button">%s</button></span></div>' % (input_html, _(u'Now')))
 
