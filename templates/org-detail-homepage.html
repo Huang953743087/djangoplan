@@ -5,7 +5,7 @@
 <div class="right companycenter layout grouping" >
 		<div class="head">
 			<h1>全部课程</h1>
-			<a class="green fr more" href="{% url 'org:org_course' org_id %}">查看更多  >  </a>
+			<a class="green fr more" href="{% url 'org:org_course' org.id %}">查看更多  >  </a>
 		</div>
 		<div class="brief group_list">
         {% for course in all_courses %}
@@ -37,7 +37,7 @@
     <div class="head">
         <h1>机构教师</h1>
 
-        <a class="green fr more" href="{% url 'org:org_teacher' org_id %}">查看更多  >  </a>
+        <a class="green fr more" href="{% url 'org:org_teacher' org.id %}">查看更多  >  </a>
     </div>
 
     <div class="diarys">
@@ -63,7 +63,7 @@
 <div class="right companycenter layout" >
     <div class="head">
         <h1>机构介绍</h1>
-        <a class="green fr more" href="{% url 'org:org_desc' course_org.id %}">查看更多  >  </a>
+        <a class="green fr more" href="{% url 'org:org_desc' org.id %}">查看更多  >  </a>
     </div>
     <div class="cont"><a type="text">{{ course_org.name }}</a></div>
     <div class="cont"><a type="text">{{ course_org.desc }}</a></div>

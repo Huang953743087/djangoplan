@@ -89,17 +89,6 @@ class LoginView(View):
         return render(request, 'login.html', {})
 
     def post(self, request):
-        """
-                首页信息
-                """
-        # 轮播图
-        all_banner = Banner.objects.all().order_by('index')[:5]
-        # 非轮播课程
-        courses = Course.objects.filter(is_banner=False)[:6]
-        # 轮播课程
-        banner_course = Course.objects.filter(is_banner=True)[:3]
-        # 机构列表
-        org_list = CourseOrg.objects.all().order_by('-click_nums')[:15]
         # 类实例化需要一个字典参数dict:request.POST就是一个QueryDict所以直接传入
         # POST中的username与password，会对应到form中
         login_form = LoginForm(request.POST)
@@ -115,12 +104,7 @@ class LoginView(View):
                 # request是要render回去的。这些信息也就随着返回浏览器。完成登录
                 login(request, user)
                 # 跳转到首页 user request会被带回到首页
-                return render(request, 'index.html', {
-                    'all_banners': all_banner,
-                    'all_courses': courses,
-                    'banner_courses': banner_course,
-                    'all_org': org_list,
-                })
+                return HttpResponseRedirect(reverse('index'))
             else:
                 return render(request, 'login.html', {'msg': '用户名或密码错误'})
 
@@ -156,17 +140,6 @@ class CustomBackend(ModelBackend):
 # 用户激活验证
 class ActiveUserView(View):
     def get(self, request, active_code):
-        """
-        首页信息
-        """
-        # 轮播图
-        all_banner = Banner.objects.all().order_by('index')[:5]
-        # 非轮播课程
-        courses = Course.objects.filter(is_banner=False)[:6]
-        # 轮播课程
-        banner_course = Course.objects.filter(is_banner=True)[:3]
-        # 机构列表
-        org_list = CourseOrg.objects.all().order_by('-click_nums')[:15]
         # 判断激活链接是否存在
         all_record = EmailVerifyRecord.objects.filter(code=active_code)
         register_form = RegisterForm(request.GET)
@@ -178,13 +151,7 @@ class ActiveUserView(View):
                 user.is_active = True
                 user.save()
 
-                return render(request, 'index.html',
-                              {
-                                  'all_banners': all_banner,
-                                  'all_courses': courses,
-                                  'banner_courses': banner_course,
-                                  'all_org': org_list,
-                              })
+                return HttpResponseRedirect(reverse('index'))
         else:
             return render(request, 'register.html', {'msg': "您的激活链接无效", 'register_form': register_form})
 
@@ -402,7 +369,7 @@ class FavTeacherView(LoginRequiredMixin, View):
     """
     login_url = '/login/'
     redirect_field_name = 'next'
-    
+
     def get(self, request):
         teacher_list = []
         fav_teachers = UserFavorite.objects.filter(user=request.user, fav_type=3)

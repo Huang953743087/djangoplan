@@ -26,7 +26,7 @@
     <form id="jsSetNewPwdForm">
         <div class="box">
             <span class="word2">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</span>
-            <input type="password" name="password" id="jsResetPwd" placeholder="请输入新密码"/>
+            <input type="password" name="password1" id="jsResetPwd" placeholder="请输入新密码"/>
         </div>
         <div class="box">
             <span class="word2">确&nbsp;认&nbsp;密&nbsp;码</span>
@@ -41,14 +41,14 @@
             <input type="hidden" name="mobile" id="jsInpResetMobil" />
             <input id="jsSetNewPwdBtn" type="button" value="提交" />
         </div>
-        <input type='hidden' name='csrfmiddlewaretoken' value='mymQDzHWl2REXIfPMg2mJaLqDfaS1sD5' />
+        {% csrf_token %}
     </form>
 </div>
 <div class="bg" id="dialogBg"></div>
 <header>
     <div class="c-box fff-box">
         <div class="wp header-box">
-            <p class="fl hd-tips">慕学网，在线学习平台！</p>
+            <p class="fl hd-tips">huang的练习</p>
             <ul class="fr hd-bar">
                 <li>服务电话：<span>33333333</span></li>
                 <li><a href="{% url 'login' %}">[登录]</a></li>
@@ -97,7 +97,6 @@
                     <input type="hidden" name="sms_type" value="1">
                     <input class="btn btn-green" id="jsFindPwdBtn" type="submit" value="提交" />
                     <p class="form-p" style="bottom:40px;">您还可以<a href="{% url 'login' %}"> [直接登录]</a></p>
-                <input type='hidden' name='csrfmiddlewaretoken' value='5I2SlleZJOMUX9QbwYLUIAOshdrdpRcy' />
                     {% csrf_token %}
                 </form>
             </div>

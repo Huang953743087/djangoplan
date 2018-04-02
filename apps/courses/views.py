@@ -55,7 +55,7 @@ class CourseDetailView(View):
     """
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
-        course.cilck_nums += 1
+        course.click_nums += 1
         course.save()
         tag = course.tag
         if tag:

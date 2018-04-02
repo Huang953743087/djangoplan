@@ -17,7 +17,7 @@ from django.urls import path, include, re_path
 from django.views.static import serve
 
 import xadmin
-from djangoplan.settings import MEDIA_ROOT
+from djangoplan.settings import MEDIA_ROOT, STATIC_ROOT
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPWDView, ResetView, ModifyPwdView, LogoutView, \
     IndexView
 
@@ -50,8 +50,10 @@ urlpatterns = [
     # 机构显示
     # path('org_list/', OrgView.as_view(), name='org_list'),
     path('org/', include('organization.urls', namespace='org')),
-    # 图片处理
+    # 图片处理,使用django自带的serve告诉他去哪里找
     re_path('media/(?P<path>.*)', serve, {"document_root": MEDIA_ROOT}),
+    # 媒体处理,
+    re_path('static/(?P<path>.*)', serve, {"document_root": STATIC_ROOT}),
     # 课程处理
     path('course/', include('courses.urls', namespace='course')),
     # 用户信息处理

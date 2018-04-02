@@ -41,8 +41,8 @@
 							</li>
 						</ul>
 						<div class="btns">
-							<div class="btn colectgroupbtn"  id="jsLeftBtn">
-                                  {% if has_fav_course %}已收藏{% else %}未收藏{% endif %}
+							<div class="btn colectgroupbtn" id="jsLeftBtn">
+                                {% if has_fav_course %}已收藏{% else %}未收藏{% endif %}
                             </div>
                                 <div class="buy btn"><a style="color: white" href="{% url 'course:course_info' course.id %}">开始学习</a></div>
 						</div>
@@ -76,8 +76,7 @@
 					<a href="{% url 'org:org_home' course.course_org.id %}">
                         <h2 class="center" title="所属机构">{{ course.course_org.name }}</h2>
                     </a>
-					<div class="btn  notlogin
-					     "data-favid="14" id="jsRightBtn">
+					<div class="btn notlogin" data-favid="14" id="jsRightBtn">
                          {% if has_fav_org %}已收藏{% else %}未收藏{% endif %}
                     </div>
 					<div class="clear">
@@ -148,7 +147,7 @@
 {% endblock %}
 
 {% block costom_js %}
-    <script type="text/javascript">
+<script>
 //收藏分享
 function add_fav(current_elem, fav_id, fav_type){
     $.ajax({
@@ -163,7 +162,7 @@ function add_fav(current_elem, fav_id, fav_type){
         success: function(data) {
             if(data.status == 'fail'){
                 if(data.msg == '用户未登录'){
-                    window.location.href="/login/";
+                    window.location.href="{% url 'login' %}";
                 }else{
                     alert(data.msg)
                 }
@@ -175,15 +174,13 @@ function add_fav(current_elem, fav_id, fav_type){
     });
 }
 
-$('#jsLeftBtn').on('click', function(){
+$("#jsLeftBtn").click(function(){
     add_fav($(this), {{ course.id }}, 1);
-});
+    });
 
-$('#jsRightBtn').on('click', function(){
+$("#jsRightBtn").click(function(){
     add_fav($(this), {{ course.course_org.id }}, 2);
-});
-
-
+    });
 </script>
 {% endblock %}
 

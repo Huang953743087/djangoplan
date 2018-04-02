@@ -45,7 +45,7 @@ class OrgListView(View):
             'all_citys': all_citys,
             'all_orgs': orgs,
             'org_nums': org_nums,
-            'hot_orgs':hot_orgs,
+            'hot_orgs': hot_orgs,
             'sort': sort,
         })
 
@@ -87,7 +87,7 @@ class OrgHomeView(View):
         return render(request, 'org-detail-homepage.html', {
             'all_courses': all_courses,
             'all_teachers': all_teachers,
-            'course_org': course_org,
+            'org': course_org,
             'has_fav': has_fav,
         })
 
@@ -107,7 +107,7 @@ class OrgCourseView(View):
                 has_fav = True
         return render(request, 'org-detail-course.html', {
             'all_courses': all_courses,
-            'course_org': course_org,
+            'org': course_org,
             'has_fav': has_fav,
         })
 
@@ -129,7 +129,7 @@ class OrgDescView(View):
             if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
                 has_fav = True
         return render(request, 'org-detail-desc.html', {
-            'course_org': course_org,
+            'org': course_org,
             "current_page": current_page,
             "has_fav": has_fav,
         })
@@ -156,7 +156,7 @@ class OrgTeacherView(View):
                 course_org.save()
         return render(request, 'org-detail-teachers.html', {
             'all_teachers': all_teachers,
-            'course_org': course_org,
+            'org': course_org,
             "current_page": current_page,
             "has_fav": has_fav
         })
@@ -236,7 +236,6 @@ class AddFavView(View):
         id = request.POST.get('fav_id', 0)
         # 取到收藏的类别
         type = request.POST.get('pav_type', 0)
-
         # 判断收藏还是取消收藏
         # 判断是否登录
         if not request.user.is_authenticated:
