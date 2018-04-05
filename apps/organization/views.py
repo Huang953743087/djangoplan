@@ -23,12 +23,19 @@ class OrgListView(View):
         # 统计机构数量
         org_nums = all_orgs.count()
         sort = request.GET.get('sort', "")
+        group = request.GET.get('group', '')
+        city = request.GET.get('city', '')
         # 排序
         if sort:
             if sort == "students":
                 all_orgs = all_orgs.order_by("-students")
             elif sort == "courses":
                 all_orgs = all_orgs.order_by("-click_nums")
+        if group:
+            all_orgs = all_orgs.filter(category=group)
+        if city:
+            now_city = CityDict.objects.get(id=int(city))
+            all_orgs = all_orgs.filter(city=now_city)
         hot_orgs = all_orgs.order_by("-click_nums")[:5]
         # 对课程机构进行分页
         # 尝试获取前台get请求传递过来的page参数
@@ -47,6 +54,8 @@ class OrgListView(View):
             'org_nums': org_nums,
             'hot_orgs': hot_orgs,
             'sort': sort,
+            'group': group,
+            'now_city': int(city),
         })
 
 

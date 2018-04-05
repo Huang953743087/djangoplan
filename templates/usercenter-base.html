@@ -25,7 +25,7 @@
 		<div  class="header2 header">
  			<div class="top">
 				<div class="wp">
-					<div class="fl"><p>服务电话：<b>23333</b></p></div>
+					<div class="fl"><p><a href="{% url 'index' %}" style="color: #00a0dc">首页</a> 服务电话：<b>23333</b></p></div>
 					<!--登录后跳转-->
 
 
@@ -85,15 +85,12 @@
 	<div class="wp list personal_list">
 	<div class="left">
         <ul>
-            <li class="active2"><a href="{% url 'user:user_info' %}">个人资料</a></li>
-            <li ><a href="{% url 'user:user_course' %}">我的课程</a></li>
-            <li ><a href="{% url 'user:fav_course' %}">我的收藏课程</a></li>
-            <li ><a href="{% url 'user:fav_org' %}">我的收藏机构</a></li>
-            <li ><a href="{% url 'user:fav_teacher' %}">我的收藏教师</a></li>
-            <li >
-                <a href="{% url 'user:user_massage' %}" style="position: relative;">
-                    我的消息
-                </a>
+            <li class="{% ifequal  '/user/info' request.path|slice:":10" %}active2{% endifequal %}"><a href="{% url 'user:user_info' %}">个人资料</a></li>
+            <li class="{% ifequal  '/user/courses' request.path|slice:":13" %}active2{% endifequal %}"><a href="{% url 'user:user_course' %}">我的课程</a></li>
+            <li class="{% ifequal  '/user/fav_course' request.path|slice:":16" %}active2{% endifequal %}"><a href="{% url 'user:fav_course' %}">我的收藏课程</a></li>
+            <li class="{% ifequal  '/user/fav_org' request.path|slice:":13" %}active2{% endifequal %}"><a href="{% url 'user:fav_org' %}">我的收藏机构</a></li>
+            <li class="{% ifequal  '/user/fav_teacher' request.path|slice:":17" %}active2{% endifequal %}"><a href="{% url 'user:fav_teacher' %}">我的收藏教师</a></li>
+            <li class="{% ifequal  '/user/message' request.path|slice:":13" %}active2{% endifequal %}"><a href="{% url 'user:user_massage' %}" style="position: relative;">我的消息</a>
             </li>
         </ul>
 	</div>

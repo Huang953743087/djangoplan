@@ -29,13 +29,13 @@
 				<li>
 					<h2>机构类别</h2>
 					<div class="cont">
-                        <a href="?city="><span class="active2">全部</span></a>
+                        <a href="?group="><span class="{% ifequal group '' %}active2{% endifequal %}">全部</span></a>
 
-                            <a href="?ct=pxjg&city="><span class="">培训机构</span></a>
+                            <a href="?group=pxjg"><span class="{% ifequal group 'pxjg' %}active2{% endifequal %}">培训机构</span></a>
 
-                            <a href="?ct=gx&city="><span class="">高校</span></a>
+                            <a href="?group=gx"><span class="{% ifequal group 'gx' %}active2{% endifequal %}">高校</span></a>
 
-                            <a href="?ct=gr&city="><span class="">个人</span></a>
+                            <a href="?group=gr"><span class="{% ifequal group 'gr' %}active2{% endifequal %}">个人</span></a>
 
 					</div>
 				</li>
@@ -43,9 +43,9 @@
 					<h2>所在地区</h2>
 					<div class="more">更多</div>
 					<div class="cont">
-                        <a href="?ct="><span class="active2">全部</span></a>
+                        <a href="?city="><span class="{% ifequal city '' %}active2{% endifequal %}">全部</span></a>
                             {% for city in all_citys %}
-                                <a href="?city=1&ct="><span class="">{{ city.name }}</span></a>
+                                <a href="?city={{ city.id }}"><span class="{% ifequal city.id now_city %}active2{% endifequal %}">{{ city.name }}</span></a>
                             {% endfor %}
 
 
@@ -88,8 +88,6 @@
                             <li class="first"><p class="pic9">课程数：<span></span></p><p class="c7">学习人数：<span>1000</span></p></li>
                             <li class="c8" style="padding-left:18px;">{{ course_org.address }}</li>
                             <li class="pic10" style="padding-left:18px;">经典课程：
-
-                                    <a href="#">c语言基础入门</a>
 
 
                             </li>

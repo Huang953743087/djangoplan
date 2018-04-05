@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from django.shortcuts import  render_to_response
+from django.shortcuts import render_to_response
 from django.views.generic.base import View
 
 from courses.models import Course
