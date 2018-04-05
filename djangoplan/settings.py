@@ -27,7 +27,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 SECRET_KEY = '4%-r5j8mtx@sjfo2bpd*-40kqkk77tpa+%x8arm5dpvtrj2#6b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '.ihave20sp.xyz']
 
@@ -139,8 +139,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static'),
-# )
+#      os.path.join(BASE_DIR, 'static'),
+#  )
 # 设置邮箱与用户名都可以登录
 AUTHENTICATION_BACKENDS = (
     'users.views.CustomBackend',

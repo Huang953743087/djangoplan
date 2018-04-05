@@ -23,7 +23,9 @@ class OrgListView(View):
         # 统计机构数量
         org_nums = all_orgs.count()
         sort = request.GET.get('sort', "")
+        # 点击所属机构的话，进行检索，返回此类机构
         group = request.GET.get('group', '')
+        # 点击城市就返回此城市机构
         city = request.GET.get('city', '')
         # 排序
         if sort:
@@ -36,6 +38,7 @@ class OrgListView(View):
         if city:
             now_city = CityDict.objects.get(id=int(city))
             all_orgs = all_orgs.filter(city=now_city)
+            city = int(city)
         hot_orgs = all_orgs.order_by("-click_nums")[:5]
         # 对课程机构进行分页
         # 尝试获取前台get请求传递过来的page参数
@@ -55,7 +58,7 @@ class OrgListView(View):
             'hot_orgs': hot_orgs,
             'sort': sort,
             'group': group,
-            'now_city': int(city),
+            'now_city': city,
         })
 
 
