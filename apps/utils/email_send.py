@@ -53,6 +53,8 @@ def send_register_email(email, send_type="register"):
         # 如果发送成功
         if send_status:
             return True
+        else:
+            return False
     elif send_type == 'forget':
         email_title = "找回密码的链接"
         email_body = loader.render_to_string(

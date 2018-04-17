@@ -59,6 +59,9 @@ class RegisterView(View):
         register_form = RegisterForm(request.POST)
         # is_valid 判断如果不符合Form中的条件会返回NONE
         if register_form.is_valid():
+            has_user = UserProfile.objects.filter(email=request.POST.get('email', ''))
+            if has_user.exists():
+                return render(request, 'register.html', {'msg': '用户名已注册', 'register_form': register_form})
             user_name = request.POST.get('email', '')
             pass_word = request.POST.get('password', '')
             # 实例化userprofile
@@ -66,18 +69,19 @@ class RegisterView(View):
             user_profile = UserProfile()
             user_profile.username = user_name
             user_profile.email = user_name
-            user_message = UserMessage()
-            user_message.user = user_profile.id
-            user_message.message = "欢迎注册huang的练习!!"
-            user_message.save()
-
             # 加密保存
             user_profile.password = make_password(pass_word)
             # 新用户默认处于未激活状态
             user_profile.is_active = False
             user_profile.save()
+            user_message = UserMessage()
+            user_message.user = user_profile.id
+            user_message.message = "欢迎注册huang的练习!!"
+            user_message.save()
             if send_register_email(user_name, 'register'):
-                return render(request, 'register.html', {})
+                return render(request, 'registering.html', {})
+            return render(request, 'register.html', {'msg': '邮件发送失败。请联系953743087', 'register_form': register_form})
+        return render(request, 'register.html', {'msg': '账号或密码格式有误', 'register_form': register_form})
 
 
 # 登陆页面
@@ -109,7 +113,7 @@ class LoginView(View):
                 return render(request, 'login.html', {'msg': '用户名或密码错误'})
 
         else:
-            return render(request, 'login.html', {'login_form' : login_form})
+            return render(request, 'login.html', {'login_form': login_form})
 
 
 # 退出登录
@@ -151,7 +155,7 @@ class ActiveUserView(View):
                 user.is_active = True
                 user.save()
 
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse('login'))
         else:
             return render(request, 'register.html', {'msg': "您的激活链接无效", 'register_form': register_form})
 
