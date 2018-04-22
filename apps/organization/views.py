@@ -222,11 +222,13 @@ class TeacherDescView(View):
         # 向前端传值说明用户是否收藏
         # 必须是用户已登录我们才需要判断。
         has_fav_teacher = False
-        if UserFavorite.objects.filter(user=request.user, fav_type=3, fav_id=teacher.id):
-            has_fav_teacher = True
         has_fav_org = False
-        if UserFavorite.objects.filter(user=request.user, fav_type=2, fav_id=teacher.org.id):
-            has_fav_org = True
+        # 必须是用户已登录我们才需要判断。
+        if request.user.is_authenticated:
+            if UserFavorite.objects.filter(user=request.user, fav_type=3, fav_id=teacher.id):
+                has_fav_teacher = True
+            if UserFavorite.objects.filter(user=request.user, fav_type=2, fav_id=teacher.org.id):
+                has_fav_org = True
 
         return render(request, 'teacher-detail.html', {
             'teacher': teacher,
